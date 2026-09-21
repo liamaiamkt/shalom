@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Envio de documentos — Condomínio Shalom</title>
+<meta name="description" content="Canal oficial de envio de documentos do Condomínio Shalom. Gestão SAMESCO CONDOMINIAL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bronze:#AA703D; --bronze-esc:#8A5A30;
+  --grafite:#525355; --grafite-esc:#3A3B3D;
+  --areia:#F3E1C5; --nevoa:#F3F3F3;
+  --verde:#4A7C59; --verde-esc:#3C6649;
+  --terracota:#9E3B2E;
+  --branco:#FFFFFF; --linha:#DED9D2; --placeholder:#6E6F71;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Jost','Calibri',Arial,sans-serif;font-weight:400;
+  background:var(--nevoa);color:var(--grafite);
+  line-height:1.55;font-size:16px;
+}
+.barra-topo{height:6px;background:linear-gradient(90deg,var(--bronze) 0%,var(--bronze) 55%,var(--grafite) 55%,var(--grafite) 100%)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 64px}
+
+/* ---------- cabeçalho ---------- */
+header{background:var(--branco);border-bottom:1px solid var(--linha)}
+.hd{max-width:720px;margin:0 auto;padding:22px 16px;display:flex;align-items:center;gap:16px}
+.marca{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.marca svg{height:46px;width:auto;display:block}
+.marca img{height:40px;width:auto;display:none}
+.marca .risco{width:1px;height:38px;background:var(--linha)}
+.hd-txt strong{display:block;font-weight:600;font-size:15px;color:var(--grafite);letter-spacing:.06em;line-height:1.25}
+.hd-txt span{display:block;font-size:12px;color:var(--placeholder);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+
+/* ---------- abertura ---------- */
+.abertura{padding:34px 0 8px}
+.abertura h1{font-weight:600;font-size:30px;line-height:1.18;color:var(--grafite);letter-spacing:-.01em}
+.abertura h1 em{font-style:normal;color:var(--bronze)}
+.abertura p{margin-top:12px;font-size:16.5px;max-width:56ch}
+.cartao-info{
+  margin-top:20px;background:var(--areia);border-radius:12px;padding:18px 20px;
+  font-size:15px;color:var(--grafite-esc);
+}
+.cartao-info ul{margin:8px 0 0 18px}
+.cartao-info li{margin-top:4px}
+
+/* ---------- avisos ---------- */
+.aviso-config{
+  display:none;margin-top:20px;background:#FCEFEC;border:1px solid var(--terracota);
+  border-left-width:5px;border-radius:10px;padding:14px 16px;font-size:14.5px;color:#7A2C22;
+}
+.aviso-config strong{color:var(--terracota)}
+
+/* ---------- seções ---------- */
+section{background:var(--branco);border:1px solid var(--linha);border-radius:14px;padding:24px 22px;margin-top:20px}
+.cab-sec{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.num{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--bronze-esc);color:#fff;
+  font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;
+}
+.cab-sec h2{font-weight:600;font-size:19px;color:var(--grafite);letter-spacing:-.005em}
+
+/* ---------- campos ---------- */
+.campo{margin-bottom:18px}
+.campo:last-child{margin-bottom:0}
+label{display:block;font-weight:500;font-size:14.5px;color:var(--grafite);margin-bottom:6px}
+label .op{font-weight:400;color:var(--placeholder);font-size:13px}
+.dica{font-size:13px;color:var(--placeholder);margin-top:5px;line-height:1.4}
+input[type=text],input[type=email],input[type=month],input[type=date],textarea{
+  width:100%;font-family:inherit;font-size:16px;color:var(--grafite-esc);
+  background:var(--branco);border:1px solid var(--linha);border-radius:9px;
+  padding:11px 13px;transition:border-color .15s,box-shadow .15s;
+}
+input::placeholder,textarea::placeholder{color:var(--placeholder)}
+input:focus,textarea:focus{outline:none;border-color:var(--bronze);box-shadow:0 0 0 3px rgba(170,112,61,.16)}
+textarea{resize:vertical;min-height:88px;line-height:1.5}
+.dupla{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.erro-campo{border-color:var(--terracota)!important}
+.msg-erro{display:none;font-size:13.5px;color:var(--terracota);margin-top:5px;font-weight:500}
+.msg-erro.on{display:block}
+
+/* ---------- grupos de despesa ---------- */
+.grupos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grupos label{
+  display:flex;align-items:center;gap:11px;margin:0;cursor:pointer;
+  border:1px solid var(--linha);border-radius:10px;padding:13px 14px;
+  font-size:14.5px;font-weight:500;color:var(--grafite);background:var(--branco);
+  transition:border-color .15s,background .15s;
+}
+.grupos label:hover{border-color:var(--bronze);background:#FDFBF8}
+.grupos input{
+  appearance:none;-webkit-appearance:none;flex-shrink:0;
+  width:19px;height:19px;border-radius:50%;border:2px solid var(--linha);
+  margin:0;cursor:pointer;transition:border-color .15s;position:relative;
+}
+.grupos input:checked{border-color:var(--bronze);border-width:6px}
+.grupos input:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.grupos label:has(input:checked){border-color:var(--bronze);background:var(--areia)}
+.grupos .n{color:var(--bronze-esc);font-weight:600}
+
+/* ---------- arquivos ---------- */
+.solta{
+  display:block;
+  border:2px dashed var(--areia);background:#FDFBF8;border-radius:12px;
+  padding:30px 20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;
+  margin:0;
+}
+.solta:hover,.solta.ativa{border-color:var(--bronze);background:#FBF5EC}
+/* O input fica invisível, mas CONTINUA na página (não usar display:none nem
+   o atributo hidden — o Safari do iPhone se recusa a abrir o seletor nesse caso). */
+#arquivos{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+#arquivos:focus-visible + .solta{border-color:var(--bronze);box-shadow:0 0 0 3px rgba(170,112,61,.16)}
+.solta svg{display:block;margin:0 auto 10px}
+.solta b{display:block;font-weight:600;font-size:16px;color:var(--grafite)}
+.solta span{display:block;font-size:13.5px;color:var(--placeholder);margin-top:4px}
+#lista{list-style:none;margin-top:14px}
+#lista li{
+  display:flex;align-items:center;flex-wrap:wrap;gap:12px;background:var(--nevoa);
+  border-radius:9px;padding:11px 13px;margin-top:8px;font-size:14.5px;
+}
+#lista .alerta{flex-basis:100%;font-size:13px;color:var(--terracota);font-weight:500;line-height:1.4}
+#lista .ic{flex-shrink:0;width:32px;height:32px;border-radius:7px;background:var(--areia);
+  display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--bronze-esc)}
+#lista .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--grafite-esc)}
+#lista .tm{flex-shrink:0;font-size:13px;color:var(--placeholder)}
+#lista .x{
+  flex-shrink:0;border:none;background:none;cursor:pointer;color:var(--placeholder);
+  font-size:20px;line-height:1;padding:2px 4px;border-radius:5px;font-family:inherit;
+}
+#lista .x:hover{color:var(--terracota);background:#FCEFEC}
+#lista li.grande{background:#FCEFEC}
+#lista li.grande .tm{color:var(--terracota);font-weight:600}
+#total{font-size:13.5px;color:var(--placeholder);margin-top:12px}
+
+/* ---------- envio ---------- */
+.rodape-form{margin-top:24px}
+button.enviar{
+  width:100%;font-family:inherit;font-weight:600;font-size:17px;color:#fff;
+  background:var(--verde);border:none;border-radius:10px;padding:16px;cursor:pointer;
+  transition:background .15s;
+}
+button.enviar:hover:not(:disabled){background:var(--verde-esc)}
+button.enviar:disabled{background:#7E8C82;cursor:not-allowed}
+.nota-envio{text-align:center;font-size:13px;color:var(--placeholder);margin-top:12px;line-height:1.45}
+
+.progresso{display:none;margin-top:18px}
+.progresso.on{display:block}
+.trilho{height:8px;background:var(--linha);border-radius:99px;overflow:hidden}
+.preench{height:100%;width:0;background:var(--bronze);border-radius:99px;transition:width .3s}
+.progresso p{font-size:14px;color:var(--grafite);margin-top:9px;text-align:center;font-weight:500}
+
+.falha{
+  display:none;margin-top:18px;background:#FCEFEC;border:1px solid var(--terracota);
+  border-left-width:5px;border-radius:10px;padding:14px 16px;font-size:14.5px;color:#7A2C22;
+}
+.falha.on{display:block}
+
+/* ---------- sucesso ---------- */
+#sucesso{display:none;text-align:center;padding:44px 22px}
+#sucesso .check{width:66px;height:66px;border-radius:50%;background:var(--verde);margin:0 auto 20px;
+  display:flex;align-items:center;justify-content:center}
+#sucesso h2{font-weight:600;font-size:25px;color:var(--grafite);margin-bottom:10px}
+#sucesso p{font-size:16px;max-width:44ch;margin:0 auto}
+.protocolo{
+  margin:24px auto 0;max-width:340px;background:var(--areia);border-radius:12px;padding:18px;
+}
+.protocolo span{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze-esc);font-weight:500}
+.protocolo b{display:block;font-weight:600;font-size:26px;color:var(--grafite);margin-top:5px;letter-spacing:.02em}
+#sucesso .denovo{
+  margin-top:26px;font-family:inherit;font-weight:600;font-size:15.5px;color:var(--grafite);
+  background:var(--branco);border:1px solid var(--linha);border-radius:10px;padding:13px 26px;cursor:pointer;
+}
+#sucesso .denovo:hover{border-color:var(--bronze);color:var(--bronze-esc)}
+
+footer{text-align:center;padding:30px 16px 0;font-size:13px;color:var(--placeholder);line-height:1.6}
+footer b{font-weight:600;color:var(--grafite);letter-spacing:.06em}
+
+@media (max-width:620px){
+  .abertura h1{font-size:25px}
+  .grupos,.dupla{grid-template-columns:1fr}
+  section{padding:20px 17px}
+  .hd{padding:18px 16px;gap:12px}
+  .marca svg{height:40px}
+}
+</style>
+</head>
+<body>
+
+<div class="barra-topo"></div>
+
+<header>
+  <div class="hd">
+    <div class="marca">
+      <!-- Quando você tiver o arquivo oficial da logo, suba-o no repositório com o nome
+           samesco-horizontal.svg e ele aparece aqui automaticamente no lugar do símbolo. -->
+      <img src="samesco-horizontal.svg" alt="SAMESCO CONDOMINIAL"
+           onload="this.style.display='block';this.previousElementSibling.style.display='none'"
+           onerror="this.remove()">
+      <svg viewBox="0 20 140 200" aria-label="Símbolo SAMESCO" role="img">
+        <path d="M 70 36 A 52 37 0 0 0 70 110" fill="none" stroke="#AA703D" stroke-width="15" stroke-linecap="round"/>
+        <path d="M 70 110 A 58 45 0 0 1 70 200" fill="none" stroke="#525355" stroke-width="15" stroke-linecap="round"/>
+      </svg>
+      <div class="risco"></div>
+    </div>
+    <div class="hd-txt">
+      <strong>CONDOMÍNIO SHALOM</strong>
+      <span>Gestão SAMESCO Condominial</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="abertura">
+    <h1>Envio de <em>documentos</em></h1>
+    <p>Canal oficial para enviar notas, boletos, recibos, contratos, fotos, áudios e vídeos do dia a dia do condomínio. Leva menos de um minuto.</p>
+
+    <div class="cartao-info">
+      Ao enviar, acontece tudo isto automaticamente:
+      <ul>
+        <li>o arquivo é guardado no Drive da gestão, na pasta do mês e do grupo de despesa;</li>
+        <li>uma linha é registrada na planilha de inventário de documentos;</li>
+        <li>você recebe por e-mail o número de protocolo do envio.</li>
+      </ul>
+    </div>
+
+    <div class="aviso-config" id="avisoConfig">
+      <strong>Formulário ainda não conectado.</strong><br>
+      Falta colar a URL do Apps Script na linha <code>URL_DO_MOTOR</code> do arquivo <code>index.html</code>.
+      Enquanto isso o botão de envio fica bloqueado. Este aviso some sozinho assim que a URL for colada.
+    </div>
+  </div>
+
+  <form id="form" novalidate>
+
+    <section>
+      <div class="cab-sec"><div class="num">1</div><h2>Quem está enviando</h2></div>
+
+      <div class="campo">
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Ex.: Maria de Souza">
+        <div class="msg-erro" id="e-nome">Preencha seu nome.</div>
+      </div>
+
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="voce@email.com" inputmode="email">
+        <div class="dica">É para lá que vai o comprovante com o número de protocolo.</div>
+        <div class="msg-erro" id="e-email">Informe um e-mail válido.</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="cab-sec"><div class="num">2</div><h2>Sobre o documento</h2></div>
+
+      <div class="campo">
+        <label>Grupo de despesa</label>
+        <div class="grupos" id="grupos">
+          <label><input type="radio" name="grupo" value="1 - RECURSOS HUMANOS"><span><span class="n">1</span> &nbsp;Recursos Humanos</span></label>
+          <label><input type="radio" name="grupo" value="2 - FORNECEDORES FIXOS"><span><span class="n">2</span> &nbsp;Fornecedores Fixos</span></label>
+          <label><input type="radio" name="grupo" value="3 - CONTAS DE CONSUMO"><span><span class="n">3</span> &nbsp;Contas de Consumo</span></label>
+          <label><input type="radio" name="grupo" value="4 - FORNECEDORES PONTUAIS"><span><span class="n">4</span> &nbsp;Fornecedores Pontuais</span></label>
+          <label><input type="radio" name="grupo" value="5 - MATERIAL E LIMPEZA"><span><span class="n">5</span> &nbsp;Material e Limpeza</span></label>
+          <label><input type="radio" name="grupo" value="6 - DESPESAS BANCÁRIAS"><span><span class="n">6</span> &nbsp;Despesas Bancárias</span></label>
+          <label><input type="radio" name="grupo" value="7 - MANUTENÇÃO"><span><span class="n">7</span> &nbsp;Manutenção</span></label>
+        </div>
+        <div class="msg-erro" id="e-grupo">Escolha um grupo de despesa.</div>
+      </div>
+
+      <div class="campo">
+        <label for="competencia">Mês de competência</label>
+        <input type="month" id="competencia" name="competencia">
+        <div class="dica">A que mês a despesa se refere — não a data de hoje. Ex.: um boleto de agosto pago em setembro é competência agosto.</div>
+        <div class="msg-erro" id="e-competencia">Informe o mês de competência.</div>
+      </div>
+
+      <div class="campo">
+        <label for="referencia">O que é ou a que se refere o arquivo</label>
+        <input type="text" id="referencia" name="referencia" placeholder="Ex.: Conta de energia da área comum">
+        <div class="msg-erro" id="e-referencia">Descreva em poucas palavras o que é o arquivo.</div>
+      </div>
+
+      <div class="dupla">
+        <div class="campo">
+          <label for="fornecedor">Fornecedor ou prestador <span class="op">(opcional)</span></label>
+          <input type="text" id="fornecedor" name="fornecedor" placeholder="Ex.: Energisa">
+        </div>
+        <div class="campo">
+          <label for="vencimento">Vencimento ou data do documento <span class="op">(opcional)</span></label>
+          <input type="date" id="vencimento" name="vencimento">
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="detalhes">Detalhes ou observações <span class="op">(opcional)</span></label>
+        <textarea id="detalhes" name="detalhes" placeholder="Qualquer coisa que a gestão precise saber sobre este documento."></textarea>
+      </div>
+    </section>
+
+    <section>
+      <div class="cab-sec"><div class="num">3</div><h2>Arquivos</h2></div>
+
+      <input type="file" id="arquivos" multiple aria-label="Escolher arquivos para enviar">
+      <label class="solta" id="solta" for="arquivos">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#AA703D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M3 15v3a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-3"/>
+        </svg>
+        <b>Toque para escolher os arquivos</b>
+        <span>Ou arraste até aqui. Pode enviar vários de uma vez.</span>
+        <span>PDF, Word, Excel, imagem, áudio, vídeo — até 30 MB cada.</span>
+      </label>
+      <ul id="lista"></ul>
+      <div id="total"></div>
+      <div class="msg-erro" id="e-arquivos">Anexe pelo menos um arquivo.</div>
+    </section>
+
+    <div class="rodape-form">
+      <button type="submit" class="enviar" id="btn">Enviar documentos</button>
+      <div class="nota-envio">Ao enviar, você confirma que os arquivos se referem ao Condomínio Shalom.</div>
+
+      <div class="progresso" id="progresso">
+        <div class="trilho"><div class="preench" id="preench"></div></div>
+        <p id="passo">Preparando o envio…</p>
+      </div>
+
+      <div class="falha" id="falha"></div>
+    </div>
+  </form>
+
+  <div id="sucesso">
+    <div class="check">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>
+    </div>
+    <h2>Documentos recebidos</h2>
+    <p id="resumo">Tudo certo. O comprovante com este protocolo já foi enviado para o seu e-mail.</p>
+    <div class="protocolo">
+      <span>Protocolo</span>
+      <b id="numProtocolo">—</b>
+    </div>
+    <button type="button" class="denovo" id="denovo">Enviar outro documento</button>
+  </div>
+
+  <footer>
+    <b>SAMESCO CONDOMINIAL</b><br>
+    Gestão condominial integrada · João Pessoa/PB<br>
+    Dúvidas sobre um envio? Responda o e-mail de protocolo.
+  </footer>
+
+</div>
+
+<script>
+/* ==========================================================================
+   >>> ÚNICA LINHA QUE VOCÊ PRECISA EDITAR <<<
+   Cole entre as aspas a URL que o Google te deu ao publicar o Apps Script.
+   Ela termina em  /exec
+   Exemplo: "https://script.google.com/macros/s/AKfycbxxxxxxxxxxxx/exec"
+   ========================================================================== */
+const URL_DO_MOTOR = "COLE_AQUI_A_URL_DO_APPS_SCRIPT";
+/* ========================================================================== */
+
+const MAX_MB = 30;
+const MAX_BYTES = MAX_MB * 1024 * 1024;
+
+const $ = function (id) { return document.getElementById(id); };
+const form = $('form'), btn = $('btn'), entrada = $('arquivos'), solta = $('solta'), lista = $('lista');
+let selecionados = [];
+const configOk = URL_DO_MOTOR.indexOf('script.google.com') !== -1;
+
+if (!configOk) {
+  $('avisoConfig').style.display = 'block';
+  btn.disabled = true;
+  btn.textContent = 'Envio indisponível — falta conectar';
+}
+
+/* --- lembra nome e e-mail de quem envia sempre --- */
+try {
+  const salvo = JSON.parse(localStorage.getItem('sh_remetente') || '{}');
+  if (salvo.nome) $('nome').value = salvo.nome;
+  if (salvo.email) $('email').value = salvo.email;
+} catch (e) {}
+
+/* --- competência começa no mês atual --- */
+(function () {
+  const d = new Date();
+  $('competencia').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+})();
+
+/* --- seleção de arquivos ---
+   A caixa pontilhada é um <label for="arquivos">, então quem abre o seletor é o
+   próprio navegador. Isso funciona em tudo, inclusive no Safari do iPhone, onde
+   abrir o seletor por JavaScript costuma ser bloqueado. Abaixo só o arrastar-e-soltar. */
+['dragenter', 'dragover'].forEach(function (ev) {
+  solta.addEventListener(ev, function (e) { e.preventDefault(); solta.classList.add('ativa'); });
+});
+['dragleave', 'drop'].forEach(function (ev) {
+  solta.addEventListener(ev, function (e) { e.preventDefault(); solta.classList.remove('ativa'); });
+});
+solta.addEventListener('drop', function (e) { adicionar(e.dataTransfer.files); });
+entrada.addEventListener('change', function () { adicionar(entrada.files); entrada.value = ''; });
+
+function adicionar(arqs) {
+  for (let i = 0; i < arqs.length; i++) {
+    const a = arqs[i];
+    const repetido = selecionados.some(function (s) { return s.name === a.name && s.size === a.size; });
+    if (!repetido) selecionados.push(a);
+  }
+  desenhar();
+}
+
+function tamanho(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(0) + ' KB';
+  return (b / 1048576).toFixed(1).replace('.', ',') + ' MB';
+}
+
+function extensao(nome) {
+  const p = nome.lastIndexOf('.');
+  return p > -1 ? nome.slice(p + 1, p + 5).toUpperCase() : 'ARQ';
+}
+
+function desenhar() {
+  lista.innerHTML = '';
+  let soma = 0, temGrande = false;
+
+  selecionados.forEach(function (a, i) {
+    soma += a.size;
+    const grande = a.size > MAX_BYTES;
+    if (grande) temGrande = true;
+
+    const li = document.createElement('li');
+    if (grande) li.className = 'grande';
+
+    const ic = document.createElement('div');
+    ic.className = 'ic'; ic.textContent = extensao(a.name);
+
+    const nm = document.createElement('div');
+    nm.className = 'nm'; nm.textContent = a.name;
+
+    const tm = document.createElement('div');
+    tm.className = 'tm';
+    tm.textContent = tamanho(a.size);
+
+    const x = document.createElement('button');
+    x.type = 'button'; x.className = 'x'; x.innerHTML = '&times;';
+    x.setAttribute('aria-label', 'Remover ' + a.name);
+    x.addEventListener('click', function () { selecionados.splice(i, 1); desenhar(); });
+
+    li.appendChild(ic); li.appendChild(nm); li.appendChild(tm); li.appendChild(x);
+
+    if (grande) {
+      const al = document.createElement('div');
+      al.className = 'alerta';
+      al.textContent = 'Acima do limite de ' + MAX_MB + ' MB — remova este arquivo para conseguir enviar.';
+      li.appendChild(al);
+    }
+
+    lista.appendChild(li);
+  });
+
+  if (!selecionados.length) { $('total').textContent = ''; return; }
+
+  let txt = selecionados.length + (selecionados.length === 1 ? ' arquivo' : ' arquivos') + ' · ' + tamanho(soma) + ' no total.';
+  if (temGrande) {
+    txt += ' Arquivos muito grandes (vídeos longos, por exemplo) devem ir pelo WhatsApp da gestão ou ser compactados antes.';
+  }
+  $('total').textContent = txt;
+}
+
+/* --- validação --- */
+function marcar(id, ok) {
+  const campo = $(id), msg = $('e-' + id);
+  if (campo && campo.classList) campo.classList.toggle('erro-campo', !ok);
+  if (msg) msg.classList.toggle('on', !ok);
+  return ok;
+}
+
+function validar() {
+  let ok = true;
+  ok = marcar('nome', $('nome').value.trim().length >= 3) && ok;
+  ok = marcar('email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim())) && ok;
+  ok = marcar('competencia', !!$('competencia').value) && ok;
+  ok = marcar('referencia', $('referencia').value.trim().length >= 3) && ok;
+
+  const grupoOk = !!document.querySelector('input[name=grupo]:checked');
+  $('e-grupo').classList.toggle('on', !grupoOk);
+  ok = grupoOk && ok;
+
+  const semGrandes = selecionados.every(function (a) { return a.size <= MAX_BYTES; });
+  const arqOk = selecionados.length > 0 && semGrandes;
+  $('e-arquivos').textContent = selecionados.length === 0
+    ? 'Anexe pelo menos um arquivo.'
+    : 'Remova os arquivos acima de ' + MAX_MB + ' MB antes de enviar.';
+  $('e-arquivos').classList.toggle('on', !arqOk);
+  ok = arqOk && ok;
+
+  if (!ok) {
+    const primeiro = document.querySelector('.msg-erro.on');
+    if (primeiro) primeiro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return ok;
+}
+
+/* --- leitura do arquivo em base64 --- */
+function lerBase64(arquivo) {
+  return new Promise(function (resolve, reject) {
+    const r = new FileReader();
+    r.onload = function () {
+      const s = String(r.result);
+      resolve(s.slice(s.indexOf(',') + 1));
+    };
+    r.onerror = function () { reject(new Error('Não consegui ler o arquivo "' + arquivo.name + '".')); };
+    r.readAsDataURL(arquivo);
+  });
+}
+
+/* --- envio --- */
+form.addEventListener('submit', async function (ev) {
+  ev.preventDefault();
+  $('falha').classList.remove('on');
+  if (!configOk || !validar()) return;
+
+  const dados = {
+    nome: $('nome').value.trim(),
+    email: $('email').value.trim(),
+    competencia: $('competencia').value,
+    grupo: document.querySelector('input[name=grupo]:checked').value,
+    referencia: $('referencia').value.trim(),
+    fornecedor: $('fornecedor').value.trim(),
+    vencimento: $('vencimento').value,
+    detalhes: $('detalhes').value.trim()
+  };
+
+  try { localStorage.setItem('sh_remetente', JSON.stringify({ nome: dados.nome, email: dados.email })); } catch (e) {}
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+  $('progresso').classList.add('on');
+
+  const total = selecionados.length;
+  let protocolo = '';
+
+  try {
+    for (let i = 0; i < total; i++) {
+      const arq = selecionados[i];
+      $('passo').textContent = total === 1
+        ? 'Enviando "' + arq.name + '"…'
+        : 'Enviando arquivo ' + (i + 1) + ' de ' + total + ' — "' + arq.name + '"';
+      $('preench').style.width = Math.round((i / total) * 92) + '%';
+
+      const base64 = await lerBase64(arq);
+
+      const corpo = Object.assign({}, dados, {
+        protocolo: protocolo,
+        indice: i,
+        total: total,
+        arquivo: { nome: arq.name, tipo: arq.type || 'application/octet-stream', tamanho: arq.size, dados: base64 }
+      });
+
+      // text/plain evita o "preflight" do navegador, que o Apps Script não responde.
+      const resp = await fetch(URL_DO_MOTOR, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(corpo)
+      });
+
+      if (!resp.ok) throw new Error('O servidor respondeu com erro ' + resp.status + '.');
+      const r = await resp.json();
+      if (!r.ok) throw new Error(r.erro || 'Erro desconhecido no servidor.');
+      protocolo = r.protocolo;
+    }
+
+    $('preench').style.width = '100%';
+    $('passo').textContent = 'Concluído.';
+
+    $('numProtocolo').textContent = protocolo;
+    $('resumo').textContent = total === 1
+      ? 'Recebemos 1 arquivo. O comprovante com este protocolo já foi para ' + dados.email + '.'
+      : 'Recebemos ' + total + ' arquivos. O comprovante com este protocolo já foi para ' + dados.email + '.';
+
+    form.style.display = 'none';
+    document.querySelector('.abertura').style.display = 'none';
+    $('sucesso').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    $('progresso').classList.remove('on');
+    $('preench').style.width = '0';
+    btn.disabled = false;
+    btn.textContent = 'Tentar enviar de novo';
+    const motivo = document.createElement('div');
+    motivo.textContent = String((err && err.message) || err);
+    $('falha').innerHTML =
+      '<strong>O envio não foi concluído.</strong><div id="motivoFalha" style="margin:6px 0 10px"></div>' +
+      'Verifique sua conexão e tente de novo. Se o erro continuar, avise a gestão — nenhum arquivo foi perdido, basta reenviar.';
+    $('motivoFalha').textContent = motivo.textContent;
+    $('falha').classList.add('on');
+    $('falha').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+/* --- enviar outro --- */
+$('denovo').addEventListener('click', function () {
+  selecionados = [];
+  desenhar();
+  $('referencia').value = '';
+  $('fornecedor').value = '';
+  $('vencimento').value = '';
+  $('detalhes').value = '';
+  const m = document.querySelector('input[name=grupo]:checked');
+  if (m) m.checked = false;
+  $('progresso').classList.remove('on');
+  $('preench').style.width = '0';
+  $('falha').classList.remove('on');
+  btn.disabled = false;
+  btn.textContent = 'Enviar documentos';
+  $('sucesso').style.display = 'none';
+  form.style.display = 'block';
+  document.querySelector('.abertura').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
